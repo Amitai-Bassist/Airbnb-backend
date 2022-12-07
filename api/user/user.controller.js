@@ -54,7 +54,7 @@ async function addUser(req, res) {
         res.send(newUser)
     } catch (err) {
         logger.error('Failed to add user', err)
-        res.status(500).send({ err: 'Failed to sdd user' })
+        res.status(500).send({ err: 'Failed to add user' })
     }
 }
 
