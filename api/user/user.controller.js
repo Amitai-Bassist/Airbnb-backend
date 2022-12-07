@@ -16,7 +16,7 @@ async function getUsers(req, res) {
     try {
         const filterBy = {
             txt: req.query?.txt || '',
-            minBalance: +req.query?.minBalance || 0
+            
         }
         const users = await userService.query(filterBy)
         res.send(users)
@@ -47,9 +47,21 @@ async function updateUser(req, res) {
     }
 }
 
+async function addUser(req, res) {
+    try {
+        const user = req.body
+        const newUser = await userService.add(user)
+        res.send(newUser)
+    } catch (err) {
+        logger.error('Failed to add user', err)
+        res.status(500).send({ err: 'Failed to sdd user' })
+    }
+}
+
 module.exports = {
     getUser,
     getUsers,
     deleteUser,
-    updateUser
+    updateUser,
+    addUser
 }
