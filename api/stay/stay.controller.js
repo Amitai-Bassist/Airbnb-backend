@@ -46,6 +46,7 @@ async function addStay(req, res) {
 async function updateStay(req, res) {
   try {
     const stay = req.body
+    console.log(stay);
     const updatedStay = await stayService.update(stay)
     res.json(updatedStay)
   } catch (err) {
