@@ -1,7 +1,7 @@
 var config
 
 if (process.env.NODE_ENV === 'production') {
-  config = require('./prod')
+  config = require('./prod-copy')
 } else {
   config = require('./dev')
 }
