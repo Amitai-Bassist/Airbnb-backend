@@ -6,7 +6,9 @@ async function getStays(req, res) {
   try {
     logger.debug('Getting Stays')
     const filterBy = {
-      txt: req.query.txt || ''
+      txt: req.query.txt || '',
+      hostId:req.query.hostId || '',
+      type:req.query.type || ''
     }
     const stays = await stayService.query(filterBy)
     res.json(stays)

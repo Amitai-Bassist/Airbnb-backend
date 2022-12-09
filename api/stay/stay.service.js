@@ -7,7 +7,8 @@ async function query(filterBy={txt:''}) {
     try {
         const criteria = {
             name: { $regex: filterBy.txt, $options: 'i' },
-            // adress: { $regex: filterBy.txt, $options: 'i' }
+            type: { $regex: filterBy.type, $options: 'i' },
+            'host._id':{$regex: filterBy.hostId, $options: 'i'},
         }
         const collection = await dbService.getCollection('stay')
         var stays = await collection.find(criteria).toArray()
