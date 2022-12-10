@@ -4,6 +4,7 @@ const utilService = require('../../services/util.service')
 const ObjectId = require('mongodb').ObjectId
 
 async function query(filterBy={txt:''}) {
+    console.log(filterBy);
     const criteria = _buildCriteria(filterBy)
     try {
         
@@ -30,20 +31,26 @@ function _buildCriteria(filterBy) {
         return {'host._id':{$regex: filterBy.hostId, $options: 'i'}}
     }
     const byTxt = {$regex: filterBy.txt, $options: 'i'}
-    const criteria = {
-            name: byTxt,
-            type: { $regex: filterBy.type, $options: 'i' },
-    } 
-        
-        // criteria.$or = [
-        //     {
-        //         username: txtCriteria
-        //     },
-        //     {
-        //         fullname: txtCriteria
-        //     }
-        // ]
-        return criteria
+    var criteria = {
+        type: { $regex: filterBy.type, $options: 'i' },
+        }
+        criteria.$or = [
+            {
+                name: byTxt
+            },
+            {
+                'loc.country': byTxt
+            },
+            {
+                'loc.city': byTxt
+            },
+            {
+                'loc.address': byTxt
+            }
+        ]
+            
+     
+    return criteria
 }
     // if (filterBy.minBalance) {
     //     criteria.score = { $gte: filterBy.minBalance }
