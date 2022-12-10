@@ -4,12 +4,18 @@ const utilService = require('../../services/util.service')
 const ObjectId = require('mongodb').ObjectId
 
 async function query(filterBy={txt:''}) {
+    const criteria = _buildCriteria(filterBy)
     try {
-        const criteria = {
-            name: { $regex: filterBy.txt, $options: 'i' },
-            type: { $regex: filterBy.type, $options: 'i' },
-            'host._id':{$regex: filterBy.hostId, $options: 'i'},
-        }
+        
+        // &&
+        // { loc: { 
+        //     $elemMatch: { 
+        //         country: byTxt, 
+        //         {address: byTxt,
+        //         city: byTxt 
+        //         } 
+        //     } 
+        // }
         const collection = await dbService.getCollection('stay')
         var stays = await collection.find(criteria).toArray()
         return stays.slice(0,32)
@@ -18,6 +24,35 @@ async function query(filterBy={txt:''}) {
         throw err
     }
 }
+
+function _buildCriteria(filterBy) {
+    if (filterBy.hostId) {
+        return {'host._id':{$regex: filterBy.hostId, $options: 'i'}}
+    }
+    const byTxt = {$regex: filterBy.txt, $options: 'i'}
+    const criteria = {
+            name: byTxt,
+            type: { $regex: filterBy.type, $options: 'i' },
+    } 
+        
+        // criteria.$or = [
+        //     {
+        //         username: txtCriteria
+        //     },
+        //     {
+        //         fullname: txtCriteria
+        //     }
+        // ]
+        return criteria
+}
+    // if (filterBy.minBalance) {
+    //     criteria.score = { $gte: filterBy.minBalance }
+// }
+
+
+
+
+
 
 async function getById(stayId) {
     try {
