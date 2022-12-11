@@ -26,8 +26,7 @@ router.put('/:id', updateStay);
 // router.post('/', requireAuth, addStay)
 // router.put('/:id', requireAuth, updateStay)
 // router.delete('/:id', requireAuth, removeStay)
-// router.delete('/:id', requireAuth, requireAdmin, removeStay)
-router.delete('/:id', removeStay);
+router.delete('/:id', requireAuth, requireAdmin, removeStay)
 
 // router.post('/:id/msg', requireAuth, addStayMsg)
 // router.delete('/:id/msg/:msgId', requireAuth, removeStayMsg)
