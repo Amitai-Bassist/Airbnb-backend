@@ -20,4 +20,7 @@ router.delete('/:id', requireAuth, requireAdmin, removeStay)
 // router.post('/:id/msg', requireAuth, addStayMsg)
 // router.delete('/:id/msg/:msgId', requireAuth, removeStayMsg)
 
+function a(){
+    
+}
 module.exports = router
