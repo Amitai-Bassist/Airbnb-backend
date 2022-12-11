@@ -10,7 +10,13 @@ async function getStays(req, res) {
       hostId:req.query.hostId || '',
       type:req.query.type || ''
     }
-    const stays = await stayService.query(filterBy)
+    var stays = await stayService.query(filterBy)
+    stays = stays.sort((stay1,stay2)=>{
+      if (stay1.scoreReview > stay2.scoreReview) return -1
+      else if (stay1.scoreReview < stay2.scoreReview) return 1
+      else if (stay1.reviews.length > stay2.reviews.length) return -1
+      else return 1
+  })
     res.json(stays)
   } catch (err) {
     logger.error('Failed to get stays', err)

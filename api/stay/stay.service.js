@@ -4,37 +4,34 @@ const utilService = require('../../services/util.service')
 const ObjectId = require('mongodb').ObjectId
 
 async function query(filterBy={txt:''}) {
-    console.log(filterBy);
     const criteria = _buildCriteria(filterBy)
     try {
-        
-        // &&
-        // { loc: { 
-        //     $elemMatch: { 
-        //         country: byTxt, 
-        //         {address: byTxt,
-        //         city: byTxt 
-        //         } 
-        //     } 
-        // }
         const collection = await dbService.getCollection('stay')
-        var stays = await collection.find(criteria).toArray()
-        return stays.slice(0,32)
+        let stays = await collection.find(criteria).map((stay)=> {return scoreReview(stay)})
+        .sort({scoreReview:-1}).limit(20).toArray()
+        return stays
     } catch (err) {
         logger.error('cannot find stays', err)
         throw err
     }
 }
 
+function scoreReview(stay){
+    stay.scoreReview = stay.reviews.map((review)=> {
+        return averageScore(review)
+    })
+    stay.scoreReview = stay.scoreReview.reduce((total,num)=> {return total + num},0)/stay.reviews.length 
+    return stay
+}
+
 function _buildCriteria(filterBy) {
-    if (filterBy.hostId) {
-        return {'host._id':{$regex: filterBy.hostId, $options: 'i'}}
-    }
     const byTxt = {$regex: filterBy.txt, $options: 'i'}
-    var criteria = {
-        type: { $regex: filterBy.type, $options: 'i' },
-        }
-        criteria.$or = [
+    const byHostId = {$regex: filterBy.hostId, $options: 'i'}
+    const byType = {$regex: filterBy.type, $options: 'i'}
+    
+    const criteria = {
+        type: byType,
+        $or: [
             {
                 name: byTxt
             },
@@ -47,19 +44,19 @@ function _buildCriteria(filterBy) {
             {
                 'loc.address': byTxt
             }
-        ]
-            
-     
+        ] 
+    } 
+    if (filterBy.hostId) {
+        return {'host._id':byHostId}
+    }
     return criteria
 }
-    // if (filterBy.minBalance) {
-    //     criteria.score = { $gte: filterBy.minBalance }
-// }
 
-
-
-
-
+function averageScore(review){
+    let average = (review.rate.Cleanliness + review.rate.Communication + 
+    review.rate.Accuracy +review.rate.Location + review.rate.Value + review.rate.CheckIn)/6 
+    return  +average.toFixed(1)
+}
 
 async function getById(stayId) {
     try {
