@@ -35,7 +35,6 @@ function scoreReview(stay) {
 
 function _buildCriteria(filterBy) {
   const byTxt = { $regex: filterBy.txt, $options: 'i' };
-  const byHostId = { $regex: filterBy.hostId, $options: 'i' };
   const byType = { $regex: filterBy.type, $options: 'i' };
 
   const criteria = {
@@ -56,7 +55,7 @@ function _buildCriteria(filterBy) {
     ],
   };
   if (filterBy.hostId) {
-    return { 'host._id': byHostId };
+    return { 'host._id': ObjectId(filterBy.hostId) };
   }
   return criteria;
 }
