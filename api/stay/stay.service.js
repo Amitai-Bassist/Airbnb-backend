@@ -12,7 +12,7 @@ async function query(filterBy = { txt: '' }) {
       .map((stay) => {
         return scoreReview(stay);
       })
-      .sort({ scoreReview: -1 })
+      .sort({ scoreReview: -1 ,price:1})
       .limit(20)
       .toArray();
     return stays;
