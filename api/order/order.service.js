@@ -11,7 +11,7 @@ async function query() {
         }
         const collection = await dbService.getCollection('order')
         var orders = await collection.find().toArray()
-        return orders.slice(0,32)
+        return orders
     } catch (err) {
         logger.error('cannot find stays', err)
         throw err
