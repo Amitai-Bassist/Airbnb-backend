@@ -1,0 +1,22 @@
+[
+    {
+        "_id": "622f337a75c7d36e498aaaf8",
+        "users": [
+            {
+                "_id": "123",
+                "name": "",
+                "corporation": ""
+            },
+            {
+                "_id": "1234",
+                "name": "",
+                "corporation": ""
+            }],
+        "corporations": [],
+        "kids": [],
+        "address": {},
+        "history": [
+            
+        ]    
+    }
+]
