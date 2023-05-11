@@ -1,6 +1,6 @@
-const connect = 'amitai131:HillaB13'
+
 
 module.exports = {
-    dbURL: `mongodb+srv://${connect}@cluster0.geknbho.mongodb.net/?retryWrites=true&w=majority,
+    dbURL: `mongodb+srv://amitai131:HillaB13@cluster0.geknbho.mongodb.net/?retryWrites=true&w=majority,
     dbName : 'stay_db'
   }
